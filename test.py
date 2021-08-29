@@ -1,3 +1,4 @@
+import selenium
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
@@ -17,10 +18,26 @@ bank_names = []
 bank_links = []
 
 for b in banks:
+    clas = b.get_attribute('class')
+    if (clas == "new"):
+            continue
+
     title = b.get_attribute('title')
     bank_names.append(title)
+    link = b.get_attribute('href')
+    bank_links.append(link)
 
 print(bank_names)
+print(bank_links)
+for l in bank_links:
+    browser.get(l)
+    try:
+        official_website = browser.find_element_by_partial_link_text('website').text
+        bank_links.append(official_website)
+    except selenium.common.exceptions.NoSuchElementException:
+        continue
+
+print(bank_links)
 
 browser.close()
 
