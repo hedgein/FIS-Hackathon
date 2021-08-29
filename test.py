@@ -7,29 +7,15 @@ options.headless = True
 
 path = "/Users/markono/Desktop/chromedriver"
 browser = webdriver.Chrome(options=options, executable_path = path)
-browser.get('https://bankchart.us/catalogue/banks')
-content = browser.find_elements_by_class_name('abc-list_with-icon')
+browser.get('https://en.wikipedia.org/wiki/List_of_largest_banks_in_the_United_States')
+content = browser.find_elements_by_tag_name('tbody')
+US_banks_table = content[0]
+
+banks = US_banks_table.find_elements_by_xpath('./tr/td[2]/a')
+print(len(banks))
 
 
-links = []
-valid_websites = []
-
-for div in content:
-    link = div.find_element_by_tag_name('a')
-    href = link.get_attribute('href')
-    links.append(href)
-
-for l in links:
-    browser.get(l)
-    bank_info = browser.find_elements_by_class_name('bank__info-item')
-
-for info in bank_info:
-    h5 = info.find_element_by_tag_name('h5')
-    if (h5.text == "Web-site:"):
-        website_link = info.find_element_by_tag_name('p').text
-        valid_websites.append(website_link)
-        print(website_link)
 
 browser.close()
-print(valid_websites)
+
 
