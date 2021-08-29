@@ -12,9 +12,15 @@ content = browser.find_elements_by_tag_name('tbody')
 US_banks_table = content[0]
 
 banks = US_banks_table.find_elements_by_xpath('./tr/td[2]/a')
-print(len(banks))
 
+bank_names = []
+bank_links = []
 
+for b in banks:
+    title = b.get_attribute('title')
+    bank_names.append(title)
+
+print(bank_names)
 
 browser.close()
 
