@@ -2,11 +2,12 @@ import selenium
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+import pandas as pd
 
 options = Options()
 options.headless = True
 
-path = "/Users/markono/Desktop/chromedriver"
+path = "/Users/jessicaso/Development/fis-hackathon/chromedriver"
 browser = webdriver.Chrome(options=options, executable_path = path)
 browser.get('https://en.wikipedia.org/wiki/List_of_largest_banks_in_the_United_States')
 content = browser.find_elements_by_tag_name('tbody')
@@ -38,9 +39,11 @@ for l in links:
     except selenium.common.exceptions.InvalidArgumentException:
         continue
 
-print(bank_names)
-print(bank_links)
 
+df = pd.DataFrame({"Links": bank_links})
+
+
+df.to_csv('/Users/jessicaso/Development/fis-hackathon/bank_details.csv', index=False)
 browser.close()
 
 
