@@ -14,10 +14,11 @@ US_banks_table = content[0]
 
 banks = US_banks_table.find_elements_by_xpath('./tr/td[2]/a')
 
+links = []
 bank_names = []
 bank_links = []
 
-for b in banks:
+for b in banks[:50]:
     clas = b.get_attribute('class')
     if (clas == "new"):
             continue
@@ -25,18 +26,19 @@ for b in banks:
     title = b.get_attribute('title')
     bank_names.append(title)
     link = b.get_attribute('href')
-    bank_links.append(link)
+    links.append(link)
 
-print(bank_names)
-print(bank_links)
-for l in bank_links:
-    browser.get(l)
+for l in links:   
     try:
-        official_website = browser.find_element_by_partial_link_text('website').text
+        browser.get(l)
+        official_website = browser.find_element_by_partial_link_text('website').get_attribute('href')
         bank_links.append(official_website)
     except selenium.common.exceptions.NoSuchElementException:
+        continue 
+    except selenium.common.exceptions.InvalidArgumentException:
         continue
 
+print(bank_names)
 print(bank_links)
 
 browser.close()
